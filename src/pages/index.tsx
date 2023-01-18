@@ -9,6 +9,8 @@ import { useKeenSlider } from "keen-slider/react"
 
 import { HomeContainer, Product } from "../../styles/pages/home";
 
+import { Handbag, CaretRight } from "phosphor-react";
+
 import "keen-slider/keen-slider.min.css"
 
 interface HomeProps {
@@ -37,16 +39,22 @@ export default function Home({ products }: HomeProps) {
       <HomeContainer ref={sliderRef} className="keen-slider">
         {products.map(product => {
           return (
-            <Link href={`/product/${product.id}`} key={product.id} prefetch={false}>
-              <Product className="keen-slider__slide">
+            <Product className="keen-slider__slide" key={product.id}>
+              <Link href={`/product/${product.id}`}  prefetch={false}>
                 <Image src={product.imageUrl} width={520} height={480} alt=""/>
+              </Link>
 
-                <footer>
+              <footer>
+                <div>
                   <strong>{product.name}</strong>
                   <span>{product.price}</span>
-                </footer>
-              </Product>
-            </Link>
+                </div>
+                  
+                <button>
+                  <Handbag size={32} weight="bold"/>
+                </button>
+              </footer>
+            </Product>
           )
         })}
       </HomeContainer>

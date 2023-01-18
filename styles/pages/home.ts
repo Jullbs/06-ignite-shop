@@ -17,11 +17,10 @@ export const Product = styled("div", {
   overflow: "hidden",
   borderRadius: 8,
   background: "linear-gradient(180deg, #1EA483 0%, #7465D4 100%)",
-  
-  cursor: "pointer",
 
   img: {
-    objectFit: "cover"
+    objectFit: "cover",
+    cursor: "pointer",
   },
 
   footer: {
@@ -29,7 +28,7 @@ export const Product = styled("div", {
     bottom: "0.25rem",
     left: "0.25rem",
     right: "0.25rem",
-    padding: "2rem",
+    padding: "1.25rem",
 
     display: "flex",
     alignItems: "center",
@@ -43,15 +42,36 @@ export const Product = styled("div", {
     opacity: 0,
     transition: "all 0.2s ease-in-out",
 
+    div:{
+      display: "flex",
+      flexDirection: "column",
+    },
+
     strong: {
       fontSize: "$lg",
-      color: "$gray100"
+      color: "$gray100",
+      lineHeight: "160%",      
     },
 
     span: {
+      marginTop: "0.25rem",
+      lineHeight: "140%", 
       fontSize: "$xl",
       fontWeight: "bold",
-      color: "$green300"
+      color: "$green300",
+    },
+
+    button: {
+      all: "unset",
+      display: "flex",
+      padding: "0.75rem",
+      borderRadius: 6,
+      backgroundColor: "$green500",
+      cursor: "pointer",
+    },
+
+    svg: {
+      color: "$white",
     }
   },
 
