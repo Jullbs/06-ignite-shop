@@ -40,20 +40,7 @@ export const CloseButton = styled(Dialog.Close, {
   }
 })
 
-export const BuyButton = styled("button", {
-  padding: "1.25rem 7.7rem",
-  border: "none",
-  borderRadius: 8,
-
-  fontSize: "$md",
-  fontWeight: 700,
-  lineHeight: "160%",
-  color: "$white",
-  backgroundColor: "$green500",
-  cursor: "pointer",
-})
-
-export const CartContent = styled(Dialog.Description, {
+export const CartContent = styled("div", {
   display: "flex",
   flexDirection: "column",
   justifyContent: "space-between",
@@ -61,24 +48,16 @@ export const CartContent = styled(Dialog.Description, {
   marginBottom: "3.44rem",
   height: "100%",
 
-  div: {
-    color: "$gray100",
-    lineHeight: "160%",
-    fontSize: "$md",
+  
+  color: "$gray100",
+  lineHeight: "160%",
+  fontSize: "$md",
+})
 
-    "&:last-child": {
-      display: "flex",
-      flexDirection: "column",
-      gap: 3,
-
-      span: {
-        display: "flex",
-        justifyContent: "space-between",
-
-
-      }
-    }
-  }
+export const CartItems = styled("div", {
+  display: "flex",
+  flexDirection: "column",	
+  gap: "1rem",
 })
 
 export const Product = styled("div", {
@@ -100,5 +79,35 @@ export const Product = styled("div", {
       color: "$green500",
       cursor: "pointer",
     }
+  }
+})
+
+export const CartDetails = styled("div", {
+    display: "flex",
+      flexDirection: "column",
+      gap: 3,
+
+      span: {
+        display: "flex",
+        justifyContent: "space-between",
+      }
+    }
+)
+
+export const BuyButton = styled("button", {
+  padding: "1.25rem 7.7rem",
+  border: "none",
+  borderRadius: 8,
+
+  fontSize: "$md",
+  fontWeight: 700,
+  lineHeight: "160%",
+  color: "$white",
+  backgroundColor: "$green500",
+  cursor: "pointer",
+
+  "&:disabled": {
+    opacity: 0.6,
+    cursor: "not-allowed",
   }
 })

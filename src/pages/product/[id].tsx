@@ -1,51 +1,70 @@
-import axios from "axios"
 import { GetStaticPaths, GetStaticProps } from "next"
 import Head from "next/head"
 import Image from "next/image"
-import { useRouter } from "next/router"
-import { useState } from "react"
 import Stripe from "stripe"
+import { useShoppingCart } from "use-shopping-cart"
+
+import { formatPrice } from "../../util/format"
 
 import { ImageContainer, ProductContainer, ProductDetails } from "../../../styles/pages/product"
 import { stripe } from "../../lib/stripe"
 
+interface Product {
+  id: string,
+  name: string,
+  imageUrl: string,
+  price: number,
+  currency: string,
+  description: string,
+  defaultPriceId: string,
+  
+}
+
 interface ProductProps {
-  product: {
-    id: string,
-    name: string,
-    imageUrl: string,
-    price: string,
-    description: string,
-    defaultPriceId: string,
-  }
+  product: Product
+    
 }
 
 export default function Product({ product }: ProductProps){
-  const [isCreatingCheckoutSession, setIsCreatingCheckoutSession] = useState(false)
-  const { isFallback } = useRouter()
+  // const [isCreatingCheckoutSession, setIsCreatingCheckoutSession] = useState(false)
 
-  if (isFallback) {
-    return  <p>Loading...</p>
-  }
+  // const { isFallback } = useRouter()
 
-  async function handleBuyProduct() {
-    try {
-      setIsCreatingCheckoutSession(true)
+  const { cartDetails, addItem } = useShoppingCart()
 
-      const response = await axios.post("/api/checkout", {
-        priceId: product.defaultPriceId,
-      })
+  // if (isFallback) {
+  //   return  <p>Loading...</p>
+  // }
 
-      const { checkoutUrl } = response.data
+  const handleAddItemToCart = ( product: Product ) => {
+    const isAlreadyInCart = Object.keys(cartDetails!).find((item) => item === product.id)
 
-      window.location.href = checkoutUrl
-    } catch (err) {
-      // conectar com uma ferramenta de observabilidade (Datadog/ Sentry)
-      setIsCreatingCheckoutSession(false)
-
-      alert("Falha ao redirecionar ao checkout!")
+    if (isAlreadyInCart) {
+      return
+    } else {
+      addItem(product)
     }
   }
+
+
+  // async function handleBuyProduct() {
+  //   try {
+  //     setIsCreatingCheckoutSession(true)
+
+  //     const response = await axios.post("/api/checkout", {
+  //       priceId: product.defaultPriceId,
+  //     })
+
+  //     const { checkoutUrl } = response.data
+
+  //     window.location.href = checkoutUrl
+  //   } catch (err) {
+  //     // conectar com uma ferramenta de observabilidade (Datadog/ Sentry)
+  //     setIsCreatingCheckoutSession(false)
+
+  //     alert("Falha ao redirecionar ao checkout!")
+  //   }
+  // }
 
   return (
     <>
@@ -60,11 +79,11 @@ export default function Product({ product }: ProductProps){
 
         <ProductDetails>
           <h1>{product.name}</h1>
-          <span>{product.price}</span>
+          <span>{formatPrice(product.price/100)}</span>
 
           <p>{product.description}</p>
 
-          <button disabled={isCreatingCheckoutSession} onClick={() => {handleBuyProduct()}}>
+          <button onClick={() => {handleAddItemToCart(product)}}>
             Colocar na sacola
           </button>
         </ProductDetails>
@@ -100,10 +119,8 @@ export const getStaticProps: GetStaticProps<any, { id: string }> = async ({ para
         id: product.id,
         name: product.name,
         imageUrl: product.images[0],
-        price: new Intl.NumberFormat("pt-BR", {
-          style: "currency",
-          currency: "BRL",
-        }).format(price.unit_amount! / 100),   
+        price: price.unit_amount, 
+        curency: price.currency,
         description: product.description,
         defaultPriceId: price.id     
       }

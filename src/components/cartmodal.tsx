@@ -1,13 +1,21 @@
 import * as Dialog from '@radix-ui/react-dialog'
 import Image from 'next/image'
+import { useShoppingCart } from 'use-shopping-cart'
 
-import { Overlay, Content, CloseButton, BuyButton, CartContent, Product } from '../../styles/components/cartmodal'
-
-import shirtImage from "../../public/Shirt.png"
+import { Overlay, Content, CloseButton, BuyButton, CartContent, Product, CartDetails, CartItems } from '../../styles/components/cartmodal'
 
 import { X } from "phosphor-react"
 
+
 export function CartModal() {
+  const { cartDetails, cartCount, formattedTotalPrice, removeItem } = useShoppingCart()
+
+  const isBuyButtonDisabled = (cartCount === 0)
+
+  const handleRemoveItem = (productId: string) => {
+    removeItem(productId)
+  }
+
   return (
     <Dialog.Portal>
       <Overlay />
@@ -18,32 +26,43 @@ export function CartModal() {
         </CloseButton>
         
         <Dialog.Title>Sacola de Compras</Dialog.Title>
+        
         <CartContent>
+          <CartItems>
+            {cartDetails !== undefined
+              &&
+              Object.values(cartDetails).map((cartItem) => {
+                return (
+                  <Product key={cartItem.id}>
+                    <div>
+                      <Image src={cartItem.imageUrl} width={102} height={94} alt=""/>
+                    </div>
+                    <span>
+                      <p>{cartItem.name}</p>
+                      <strong>{cartItem.formattedPrice}</strong>
+                      <button onClick={() => handleRemoveItem(cartItem.id)}>
+                        Remover
+                      </button>
+                    </span>
+                  </Product>
+                )                
+              })             
+            }
+          </CartItems>
 
-          <Product>
-            <div>
-              <Image src={shirtImage} width={102} height={94} alt=""/>
-            </div>
-            <span>
-              <p>Camiseta Beyond Limits</p>
-              <strong>R$ 79,90</strong>
-              <button>Remover</button>
-            </span>
-          </Product>
-
-          <div>
+          <CartDetails>
             <span>
               <p>Quantidade</p>
-              <p>3 itens</p>
+              <p>{cartCount !== 1 ? `${cartCount} itens` : `${cartCount} item`}</p>
             </span>
             <span>
               <strong>Total</strong>
-              <strong>R$270,00</strong>
+              <strong>{formattedTotalPrice}</strong>
             </span>
-          </div>
+          </CartDetails>
         </CartContent>   
 
-        <BuyButton>
+        <BuyButton disabled={isBuyButtonDisabled}>
           Finalizar Compra
         </BuyButton>
       </Content>

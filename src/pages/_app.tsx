@@ -1,19 +1,26 @@
 import type { AppProps } from 'next/app'
 
+import { CartProvider } from 'use-shopping-cart';
+
 import { globalStyles } from '../../styles/global';
 
-import { CartContextProvider } from '../context/CartContext';
 import Layout from '../components/layout';
 
 globalStyles()
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
-    <CartContextProvider>
+    <CartProvider
+      // mode="payment"
+      cartMode="checkout-session"
+      stripe={JSON.stringify(process.env.STRIPE_PUBLIC_KEY)}
+      currency="BRL"
+      shouldPersist={true}
+    >
       <Layout>
        <Component {...pageProps} />
       </Layout>
-    </CartContextProvider>
+    </CartProvider>
     
  )
 }

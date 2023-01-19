@@ -22,6 +22,27 @@ export const HeaderContainer = styled("header", {
 
     svg: {
       color: "$gray400",
+    },
+
+    p: {
+      position: "absolute",
+      display: "flex",
+      flexDirection: "column",
+      verticalAlign: "",
+      textAlign: "center",
+      marginLeft: "1.2rem",
+      marginTop: "-1.2rem",
+
+      lineHeight: "160%",
+      width: "1.5rem",
+      borderRadius: "1rem",
+      border: "3px solid $gray900",
+
+      fontSize: "0.875rem",
+      fontWeight: 700,
+
+      color: "$white",
+      backgroundColor: "$green500",
     }
   }
 })
