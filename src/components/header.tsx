@@ -1,5 +1,6 @@
 import  Image from "next/image"
 import Link from "next/link"
+import { useRouter } from 'next/router'
 import * as Dialog from '@radix-ui/react-dialog'
 import { useShoppingCart } from "use-shopping-cart"
 
@@ -14,24 +15,36 @@ import logoImg from "../assets/logo.svg"
 
 export function Header() {
   const { cartCount } = useShoppingCart()
+  const { pathname } = useRouter()
+
+  const pageHeaderStyle = () => {
+    if(pathname !== "/success") {
+      return "spaceBetween"
+    }else {
+      return "center"
+    }
+  }
 
   return (
-    <HeaderContainer>
+    <HeaderContainer content={pageHeaderStyle()}>
         <Link href={`/`}  prefetch={false}>
           <Image src={logoImg} alt=''/>
         </Link>
         
-
-        <Dialog.Root>
-          <Dialog.Trigger asChild>
-            <button>
-              <Handbag size={24} weight="bold"/>
-              <p>{cartCount !== 0 && cartCount}</p>
-            </button>
-          </Dialog.Trigger>  
+        {pathname !== "/success"
+          &&
+          <Dialog.Root>
+            <Dialog.Trigger asChild>
+              <button>
+                <Handbag size={24} weight="bold"/>
+                <p>{cartCount !== 0 && cartCount}</p>
+              </button>
+            </Dialog.Trigger>  
                      
-          <CartModal />
-        </Dialog.Root>
+            <CartModal />
+          </Dialog.Root>
+        }
+        
     </HeaderContainer>
   )
 }

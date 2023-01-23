@@ -10,6 +10,7 @@ import { stripe } from "../../lib/stripe";
 
 interface InfoFromProduct {
   productInfo: {
+    id: string,
     images: string[]
   }
 }
@@ -40,7 +41,7 @@ export default function Success({ customerName, productsData }: SuccessProps) {
           {productsData !== undefined
             && productsData.map((product) => {
             return (
-              <ImageContainer>
+              <ImageContainer key={product.productInfo.id}>
                 <Image src={product.productInfo.images[0]} width={130} height={142} alt="" />
               </ImageContainer>
             )

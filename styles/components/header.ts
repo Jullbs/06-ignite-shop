@@ -9,6 +9,17 @@ export const HeaderContainer = styled("header", {
   maxWidth: 1180,
   margin: "0 auto",
 
+  variants: {
+    content: {
+      center: {
+        justifyContent: "center",
+      },
+      spaceBetween: {
+        justifyContent: "space-between",
+      }
+    }
+  },
+
   button: {
     all: "unset",
     display: "flex",
